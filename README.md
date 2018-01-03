@@ -2,7 +2,7 @@
 
 ## Introduction
 
-**Spark** is one important component of the *Big Data* world to perform data mining.
+**Spark** is one important component of the *Big Data* world to perform data mining. I will show how to setup a stand-alone Spark installation on a *Rapsberry Pi* and how to interact with this installation from a local PC. This is not an installation for daily usage and real big files. It should only give an example of how to work with **Spark** - see like small exercise to have some fun with Spark, Raspberry Pi and KNIME. I hope that his *exercise* will motivate you to work on your own small projects.  
 
 * Are you new to the *Big Data* world?
 * Do you struggle with all the new vocabulary around *Big Data*?
@@ -11,7 +11,7 @@
 
 Then this repository will help you
 1. to install **Spark** on the **Raspberry Pi 3B** and
-2. to use the workflow system **KNIME** to run a data mining workflow on **Spark**.
+2. to run the workflow system **KNIME** on a local PC to perform a data mining workflow on the remote *Raspberry Pi* computer.
 
 [**KNIME**](https://www.knime.com) is an easy to use workflow editor that is of great use for people not able (or willing) to program in Java, Scala or similar languages. The basic platform is open source and therefore for free. The extensions for *Big Data* are also available as open source.
 
@@ -41,11 +41,11 @@ Use the password **spark**.
 Open the web console of the **Spark Jobserver** in a standard browser via: `http://<IP-address>:8090`
 
 ## KNIME Workflow
-The KNIME workflow is available in this repository (see **knwf file**). To start the workflow please install KNIME 3.5.x or higher together with the **Big Data extensions** (via *File* menu within the KNIME GUI). Then import the workflow (right-click on an existing workflow group). Before you start, make sure that you adapt the settings of the **Create Spark Context** node with your own IP address. All other nodes can remain unchanged - also the **File Reader** node because the IRIS dataset is included in the workflow directory.
+The KNIME workflow is available in this repository (see [**knwf file**](https://github.com/frank-123/KNIME-BigData-RaspberryPi-AWS/blob/master/Standalone_Spark_1_6_x_on_Raspi3B.knwf)). To start the workflow please install KNIME 3.5.x or higher together with the **Big Data extensions** (via *File* menu within the KNIME GUI). Then import the workflow (right-click on an existing workflow group). Before you start, make sure that you adapt the settings of the **Create Spark Context** node with your own IP address. All other nodes can remain unchanged - also the **File Reader** node because the IRIS dataset is included in the workflow directory.
 
 This workflow includes already the famous [IRIS dataset](https://en.wikipedia.org/wiki/Iris_flower_data_set) for two data mining processes: **k-means clustering** and **principle component analysis**. The parts of the workflow marked in light red do not run on the local PC, but remotely in the Spark environment on the Raspberry Pi. for these parts KNIME is "just" the control center for the processes within the *Big Data* environment - and KNIME is easy to use without any deeper knowledge of the languages Java, Scala, etc.
 
-## How was the image prepared?
+## How was the image created?
 The preparation of the provided image is described in this chapter. If you do not want to download the provided image, we can prepare the **Spark** system on your own following the description in this chapter.
 
 ### Preparation of the Raspi
@@ -103,7 +103,7 @@ LOG_DIR=/home/spark/logs
 ```
 
 To start the job server just type `cd /opt/spark-jobserver;./server_start.sh`
-Please make sure that you start the server in its local directory (already inlcuded in the command line above), otherwise KNIME is not able to create a Spark context and throws an error message like *Cannot find the script manager_start.sh*.
+Please make sure that you start the server in its local directory (already inlcuded in the command line above), otherwise KNIME is not able to create a Spark context and throws an error message like *Cannot find the script manager_start.sh*. This is not the preferred way to start the *Spark Jobserver* (see official documentation on KNIME webpage), but it works for our example.
 
 To stop the server: `./server_stop.sh`
 
@@ -120,6 +120,6 @@ You can shutdown the Raspi via `sudo shutdown -h now`.
 
 ## What else can you do?
 * A Raspberry Pi is also suitable for a simple **Hadoop** and **HIVE** installation. It works and you can try it.
-   * Please visit [Phil Davis's Github repository](https://github.com/phil-davis/HadoopRPi3/blob/master/docs/HadoopRPi3-setup.txt) for a *Hadoop* installation. He describes the setup of a cluster of 3 *Raspberry Pi's*. But if you follow only the first steps of his tutorial, you can setup jist one Raspberry Pi.
+   * Please visit [Phil Davis's Github repository](https://github.com/phil-davis/HadoopRPi3/blob/master/docs/HadoopRPi3-setup.txt) for a *Hadoop* installation. He describes the setup of a cluster of 3 *Raspberry Pi's*. But if you follow only the first steps of his tutorial, you can setup just one Raspberry Pi.
    * [This blog](https://blogs.sap.com/2015/05/03/a-haddop-data-lab-project-on-raspberry-pi-part-24/) describes the installation of *HIVE* on a *Raspberry Pi*. You have to start the *hiveserver* to connect via KNIME to the *HIVE* system. This is explained in the [3rd part](https://blogs.sap.com/2015/05/23/a-hadoop-data-lab-roject-on-raspberry-pi-part-34/) of the tutorial. The *hiveserver* uses port 10000. Part 1 of the tutorial describes the installation of the underlying *Hadoop* system. 
-* Amazon AWS offers a free usage tier for new AWS customers expiring after 12 months. The same installation of **Spark** also runs on the *free of charge* AWS system. You can try it. Just start an EC2 instance, install **Spark** and **Spark Jobserver** as described, enable ssh access to the EC2 instance via a password and add a new security group "Custom TCP" to use the port 8090. Ask Google for help! You will find the very good and detailedtutorials provided by Amazon AWS.
+* Amazon AWS offers a [free usage tier](https://aws.amazon.com/free/?nc1=h_ls) for new AWS customers expiring after 12 months. The same installation of **Spark** also runs on the *free of charge* AWS system. You can try it. Just start an EC2 instance, install **Spark** and **Spark Jobserver** as described, enable ssh access to the EC2 instance via a password and add a new security group "Custom TCP" to use the port 8090. Ask Google for help and look for the the very good and detailed tutorials provided by Amazon AWS!
