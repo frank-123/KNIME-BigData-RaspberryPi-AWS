@@ -23,14 +23,16 @@ All you need for your first *Big Data* installation is a *Raspberry Pi 3B* (for 
 
 ## Image
 
-A complete installation of [*Spark 1.6.x*](https://spark.apache.org/) together with the full version of [*Raspbian Stretch*](https://www.raspberrypi.org/downloads/) is availabe on the image that is provided in this repository. I use the headless mode although it is also possible to use the GUI mode of Raspbian.
+A complete installation of [*Spark 1.6.x*](https://spark.apache.org/) together with the full version of [*Raspbian Stretch*](https://www.raspberrypi.org/downloads/) is availabe as an image for an *32 GB Micro SD card* The image can be downloaded from an Amazon AWS S3 bucket. I use the headless mode although it is also possible to use the GUI mode of Raspbian.
 
+* Download the [image](https://my.hidrive.com/lnk/MvypOgQV) from my *HiDrive* account. The size of the zipped *iso* file is about 3 GB!
 * Unzip the image and write the image to a *32 GB Micro SD card* (e.g. Toshiba Exceria, Scandisk Ultra). Ask Google for a good programm to write an image to a SD card (I used *Etcher* on MacOS). 
-* Connect the RaspberryPi with your router and start the Raspberry Pi by connecting it to powder supply.
+* Connect the RaspberryPi with your router and start the Raspberry Pi by connecting it to power supply.
 * Find the IP address of the Raspberry Pi via the Router menu (name of Raspi: SparkPi).
 * Your Spark installation is then ready for usage (because all required services will start automatically).
+* **Attention!** This image is only suitable for your very first tests because all users (*pi* and *spark*) have the very simple password *spark*.  If you would like to use it more frequently, please change the passwords for the users *pi* and *spark*.
 
-If you want, you can connect to the Raspberry Pi via ssh connection. Please use the terminal on MacOS or [MobaXterm](https://mobaxterm.mobatek.net/) or any other ssh software on Windows:
+If you want, you can connect to the Raspberry Pi via ssh connection. Please use the terminal on MacOS or [*MobaXterm*](https://mobaxterm.mobatek.net/), *Putty* or any other ssh software on Windows:
 ```
 ssh spark@<IP-address>
 ```
@@ -43,8 +45,8 @@ The KNIME workflow is available in this repository (see **knwf file**). To start
 
 This workflow includes already the famous [IRIS dataset](https://en.wikipedia.org/wiki/Iris_flower_data_set) for two data mining processes: **k-means clustering** and **principle component analysis**. The parts of the workflow marked in light red do not run on the local PC, but remotely in the Spark environment on the Raspberry Pi. for these parts KNIME is "just" the control center for the processes within the *Big Data* environment - and KNIME is easy to use without any deeper knowledge of the languages Java, Scala, etc.
 
-## Preparation of image
-The preparation of the provided image is described in this chapter.
+## How was the image prepared?
+The preparation of the provided image is described in this chapter. If you do not want to download the provided image, we can prepare the **Spark** system on your own following the description in this chapter.
 
 ### Preparation of the Raspi
 * Write Raspbian to the SD card
@@ -68,13 +70,13 @@ sudo adduser spark sudo #add to sudo group
 exit #to close the ssh connection
 ```
 * And then connect now via `ssh spark@<IP address>`
-* Open the .bashrx file with `nano .bashrc` and add:
+* Open and edit the *.bashrc* file with `nano .bashrc` and add:
 ```
 export SPARK_HOME=/home/pi/spark
 export PATH=$PATH:$SPARK_HOME/bin
 ```
 
-* You can close the editor with <CTRL>&O, <ENTER>, <CTRL>&X
+* You can close the nano editor with <CTRL>&O, <ENTER>, <CTRL>&X
 * Then read the new file with `source .bashrc`
 
 ### Spark Installation
@@ -112,8 +114,12 @@ Just add: `@reboot cd /opt/spark-jobserver;./server_start.sh`
 You can shutdown the Raspi via `sudo shutdown -h now`.
 
 ## Used internet resources
-xxxx xxxx xxxx
+* https://darrenjw2.wordpress.com/2015/04/17/installing-apache-spark-on-a-raspberry-pi-2/
+* https://darrenjw2.wordpress.com/2015/04/18/setting-up-a-standalone-apache-spark-cluster-of-raspberry-pi-2/
+
 
 ## What else can you do?
-* A Raspberry Pi is also suitable for a simple **Hadoop** and **HIVE** installation. It works and you can try it. Please visit [XXX](www.google.de).
-* Amazon AWS offers a free usage tier for new AWS customers expiring after 12 months. The same installation of **Spark** also runs on the *free of charge* AWS system. You can try it. Just start an EC2 instance, install **Spark** and **Spark Jobserver** as described, enable ssh access to the EC2 instance via a password and add a new security group "Custom TCP" to use the port 8090. Ask Google for help!
+* A Raspberry Pi is also suitable for a simple **Hadoop** and **HIVE** installation. It works and you can try it.
+   * Please visit [Phil Davis's Github repository](https://github.com/phil-davis/HadoopRPi3/blob/master/docs/HadoopRPi3-setup.txt) for a *Hadoop* installation. He describes the setup of a cluster of 3 *Raspberry Pi's*. But if you follow only the first steps of his tutorial, you can setup jist one Raspberry Pi.
+   * [This blog](https://blogs.sap.com/2015/05/03/a-haddop-data-lab-project-on-raspberry-pi-part-24/) describes the installation of *HIVE* on a *Raspberry Pi*. You have to start the *hiveserver* to connect via KNIME to the *HIVE* system. This is explained in the [3rd part](https://blogs.sap.com/2015/05/23/a-hadoop-data-lab-roject-on-raspberry-pi-part-34/) of the tutorial. The *hiveserver* uses port 10000. Part 1 of the tutorial describes the installation of the underlying *Hadoop* system. 
+* Amazon AWS offers a free usage tier for new AWS customers expiring after 12 months. The same installation of **Spark** also runs on the *free of charge* AWS system. You can try it. Just start an EC2 instance, install **Spark** and **Spark Jobserver** as described, enable ssh access to the EC2 instance via a password and add a new security group "Custom TCP" to use the port 8090. Ask Google for help! You will find the very good and detailedtutorials provided by Amazon AWS.
